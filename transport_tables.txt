@@ -1,0 +1,209 @@
+CREATE TABLE Vehicles (
+    VehicleID INT PRIMARY KEY,
+    VehicleType VARCHAR(50),
+    Make VARCHAR(50),
+    Model VARCHAR(50),
+    Year INT,
+    FuelType VARCHAR(20)
+);
+
+CREATE TABLE Drivers (
+    DriverID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    LicenseNumber VARCHAR(50),
+    LicenseExpiryDate DATE,
+    ContactNumber VARCHAR(15)
+);
+
+CREATE TABLE FuelConsumption (
+    ConsumptionID INT PRIMARY KEY,
+    VehicleID INT,
+    Date DATE,
+    FuelAmount DECIMAL(10, 2),
+    Mileage DECIMAL(10, 2),
+    FOREIGN KEY (VehicleID) REFERENCES Vehicles(VehicleID)
+);
+
+CREATE TABLE Trips (
+    TripID INT PRIMARY KEY,
+    VehicleID INT,
+    DriverID INT,
+    StartLocation VARCHAR(100),
+    EndLocation VARCHAR(100),
+    StartTime DATETIME,
+    EndTime DATETIME,
+    Distance DECIMAL(10, 2),
+    FOREIGN KEY (VehicleID) REFERENCES Vehicles(VehicleID),
+    FOREIGN KEY (DriverID) REFERENCES Drivers(DriverID)
+);
+
+CREATE TABLE Maintenance (
+    MaintenanceID INT PRIMARY KEY,
+    VehicleID INT,
+    MaintenanceDate DATE,
+    Description TEXT,
+    Cost DECIMAL(10, 2),
+    FOREIGN KEY (VehicleID) REFERENCES Vehicles(VehicleID)
+);
+
+
+CREATE TABLE Emissions (
+    EmissionID INT PRIMARY KEY,
+    VehicleID INT,
+    Date DATE,
+    CO2Emitted DECIMAL(10, 2),
+    NOxEmitted DECIMAL(10, 2),
+    FOREIGN KEY (VehicleID) REFERENCES Vehicles(VehicleID)
+);
+
+CREATE TABLE FuelTypes (
+    FuelTypeID INT PRIMARY KEY,
+    FuelTypeName VARCHAR(20),
+    CO2PerUnit DECIMAL(10, 2),
+    NOxPerUnit DECIMAL(10, 2)
+);
+
+CREATE TABLE Routes (
+    RouteID INT PRIMARY KEY,
+    StartLocation VARCHAR(100),
+    EndLocation VARCHAR(100),
+    Distance DECIMAL(10, 2)
+);
+
+CREATE TABLE Inspections (
+    InspectionID INT PRIMARY KEY,
+    VehicleID INT,
+    InspectionDate DATE,
+    InspectorName VARCHAR(50),
+    Result VARCHAR(20),
+    Comments TEXT,
+    FOREIGN KEY (VehicleID) REFERENCES Vehicles(VehicleID)
+);
+
+
+INSERT INTO Vehicles (VehicleID, VehicleType, Make, Model, Year, FuelType)
+VALUES
+(1, 'Sedan', 'Toyota', 'Camry', 2018, 'Gasoline'),
+(2, 'Truck', 'Ford', 'F-150', 2020, 'Diesel'),
+(3, 'SUV', 'Honda', 'CR-V', 2019, 'Gasoline'),
+(4, 'Van', 'Mercedes', 'Sprinter', 2017, 'Diesel'),
+(5, 'Sedan', 'Tesla', 'Model S', 2021, 'Electric'),
+(6, 'Truck', 'Chevrolet', 'Silverado', 2018, 'Diesel'),
+(7, 'SUV', 'BMW', 'X5', 2019, 'Gasoline'),
+(8, 'Van', 'Ford', 'Transit', 2020, 'Gasoline'),
+(9, 'Sedan', 'Nissan', 'Altima', 2016, 'Gasoline'),
+(10, 'SUV', 'Audi', 'Q7', 2021, 'Diesel');
+
+
+INSERT INTO Drivers (DriverID, FirstName, LastName, LicenseNumber, LicenseExpiryDate, ContactNumber)
+VALUES
+(1, 'John', 'Doe', 'L123456789', '2025-06-01', '123-456-7890'),
+(2, 'Jane', 'Smith', 'L987654321', '2024-12-31', '987-654-3210'),
+(3, 'Michael', 'Johnson', 'L456789123', '2026-03-15', '456-789-1234'),
+(4, 'Emily', 'Davis', 'L321654987', '2025-11-10', '321-654-9870'),
+(5, 'David', 'Brown', 'L789123456', '2023-07-20', '789-123-4567'),
+(6, 'Sarah', 'Wilson', 'L654321789', '2024-09-25', '654-321-7890'),
+(7, 'Chris', 'Lee', 'L123789456', '2026-02-05', '123-789-4560'),
+(8, 'Laura', 'Taylor', 'L987321654', '2025-05-30', '987-321-6543'),
+(9, 'James', 'Anderson', 'L456123789', '2023-08-17', '456-123-7894'),
+(10, 'Emma', 'Thomas', 'L321987654', '2024-10-12', '321-987-6543');
+
+
+INSERT INTO FuelConsumption (ConsumptionID, VehicleID, Date, FuelAmount, Mileage)
+VALUES
+(1, 1, '2023-01-15', 50.5, 400),
+(2, 2, '2023-01-16', 60.2, 350),
+(3, 3, '2023-01-17', 55.0, 370),
+(4, 4, '2023-01-18', 70.8, 300),
+(5, 5, '2023-01-19', 0, 450),
+(6, 6, '2023-01-20', 65.4, 330),
+(7, 7, '2023-01-21', 52.6, 380),
+(8, 8, '2023-01-22', 57.3, 360),
+(9, 9, '2023-01-23', 48.9, 410),
+(10, 10, '2023-01-24', 75.1, 290);
+
+
+INSERT INTO Trips (TripID, VehicleID, DriverID, StartLocation, EndLocation, StartTime, EndTime, Distance)
+VALUES
+(1, 1, 1, 'New York', 'Boston', '2023-02-01 08:00', '2023-02-01 12:00', 215),
+(2, 2, 2, 'Los Angeles', 'San Francisco', '2023-02-02 09:00', '2023-02-02 14:00', 380),
+(3, 3, 3, 'Chicago', 'Detroit', '2023-02-03 07:00', '2023-02-03 11:00', 283),
+(4, 4, 4, 'Houston', 'Dallas', '2023-02-04 10:00', '2023-02-04 13:00', 239),
+(5, 5, 5, 'Miami', 'Orlando', '2023-02-05 06:00', '2023-02-05 09:00', 230),
+(6, 6, 6, 'Seattle', 'Portland', '2023-02-06 08:00', '2023-02-06 11:00', 173),
+(7, 7, 7, 'Denver', 'Salt Lake City', '2023-02-07 09:00', '2023-02-07 13:00', 518),
+(8, 8, 8, 'Atlanta', 'Charlotte', '2023-02-08 07:00', '2023-02-08 11:00', 245),
+(9, 9, 9, 'Phoenix', 'Las Vegas', '2023-02-09 10:00', '2023-02-09 14:00', 297),
+(10, 10, 10, 'San Diego', 'Los Angeles', '2023-02-10 08:00', '2023-02-10 10:00', 121);
+
+INSERT INTO Maintenance (MaintenanceID, VehicleID, MaintenanceDate, Description, Cost)
+VALUES
+(1, 1, '2023-01-10', 'Oil Change', 50.00),
+(2, 2, '2023-01-15', 'Tire Rotation', 40.00),
+(3, 3, '2023-01-20', 'Brake Inspection', 60.00),
+(4, 4, '2023-01-25', 'Engine Check', 100.00),
+(5, 5, '2023-01-30', 'Battery Replacement', 120.00),
+(6, 6, '2023-02-04', 'Air Filter Replacement', 30.00),
+(7, 7, '2023-02-08', 'Transmission Fluid Change', 70.00),
+(8, 8, '2023-02-12', 'Spark Plug Replacement', 45.00),
+(9, 9, '2023-02-16', 'Cooling System Flush', 80.00),
+(10, 10, '2023-02-20', 'Fuel System Cleaning', 90.00);
+
+
+INSERT INTO Emissions (EmissionID, VehicleID, Date, CO2Emitted, NOxEmitted)
+VALUES
+(1, 1, '2023-01-15', 150.5, 0.3),
+(2, 2, '2023-01-16', 200.2, 0.4),
+(3, 3, '2023-01-17', 180.0, 0.35),
+(4, 4, '2023-01-18', 220.8, 0.5),
+(5, 5, '2023-01-19', 0, 0),
+(6, 6, '2023-01-20', 195.4, 0.45),
+(7, 7, '2023-01-21', 160.6, 0.32),
+(8, 8, '2023-01-22', 170.3, 0.34),
+(9, 9, '2023-01-23', 140.9, 0.29),
+(10, 10, '2023-01-24', 230.1, 0.52);
+
+
+INSERT INTO FuelTypes (FuelTypeID, FuelTypeName, CO2PerUnit, NOxPerUnit)
+VALUES
+(1, 'Gasoline', 2.31, 0.02),
+(2, 'Diesel', 2.68, 0.04),
+(3, 'Electric', 0.00, 0.00),
+(4, 'Hybrid', 1.15, 0.01),
+(5, 'Bio-Diesel', 2.50, 0.03),
+(6, 'Ethanol', 1.90, 0.02),
+(7, 'CNG', 2.75, 0.03),
+(8, 'Propane', 2.32, 0.02),
+(9, 'Hydrogen', 0.00, 0.00),
+(10, 'LPG', 2.50, 0.03);
+
+INSERT INTO Routes (RouteID, StartLocation, EndLocation, Distance)
+VALUES
+(1, 'New York', 'Boston', 215),
+(2, 'Los Angeles', 'San Francisco', 380),
+(3, 'Chicago', 'Detroit', 283),
+(4, 'Houston', 'Dallas', 239),
+(5, 'Miami', 'Orlando', 230),
+(6, 'Seattle', 'Portland', 173),
+(7, 'Denver', 'Salt Lake City', 518),
+(8, 'Atlanta', 'Charlotte', 245),
+(9, 'Phoenix', 'Las Vegas', 297),
+(10, 'San Diego', 'Los Angeles', 121);
+
+
+INSERT INTO Inspections (InspectionID, VehicleID, InspectionDate, InspectorName, Result, Comments)
+VALUES
+(1, 1, '2023-01-12', 'Inspector A', 'Pass', 'No issues found'),
+(2, 2, '2023-01-18', 'Inspector B', 'Pass', 'Tires slightly worn'),
+(3, 3, '2023-01-24', 'Inspector C', 'Fail', 'Brake pads need replacement'),
+(4, 4, '2023-01-30', 'Inspector D', 'Pass', 'All good'),
+(5, 5, '2023-02-05', 'Inspector E', 'Pass', 'Battery in good condition'),
+(6, 6, '2023-02-10', 'Inspector F', 'Pass', 'Minor oil leak'),
+(7, 7, '2023-02-15', 'Inspector G', 'Fail', 'Transmission issues'),
+(8, 8, '2023-02-20', 'Inspector H', 'Pass', 'No issues found'),
+(9, 9, '2023-02-25', 'Inspector I', 'Pass', 'Cooling system needs check'),
+(10, 10, '2023-03-01', 'Inspector J', 'Pass', 'No issues found');
+
+
+
